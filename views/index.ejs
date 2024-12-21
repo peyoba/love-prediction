@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <div class="page-loader">
+        <div class="loader-content">
+            <div class="loader-spinner"></div>
+            <p>加载中...</p>
+        </div>
+    </div>
+
+    <%- include('partials/nav') %>
+
+    <main>
+        <!-- 英雄区域 -->
+        <section class="hero-section">
+            <div class="hero-content">
+                <h1 class="hero-title animate-fade-in">AI 恋爱契合度预测</h1>
+                <p class="hero-description animate-fade-in">
+                    基于人工智能的智能匹配系统，帮助您找到最适合的伴侣
+                </p>
+                <div class="hero-buttons animate-fade-in">
+                    <a href="/prediction" class="btn btn-primary">开始预测</a>
+                    <a href="/community" class="btn btn-outline">加入社区</a>
+                </div>
+            </div>
+            <div class="hero-image animate-fade-in">
+                <img data-src="/images/hero-image.png" alt="恋爱预测" src="/images/placeholder.png">
+            </div>
+        </section>
+
+        <!-- 特色功能 -->
+        <section class="features-section">
+            <h2 class="section-title">我们的特色</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <img data-src="/images/icons/ai.svg" alt="AI预测" src="/images/icons/placeholder.svg">
+                    </div>
+                    <h3>AI智能预测</h3>
+                    <p>基于深度学习算法精准分析契合度</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <img src="/images/icons/community.svg" alt="社区交流">
+                    </div>
+                    <h3>社区交流</h3>
+                    <p>分享经验，寻找知音</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <img src="/images/icons/expert.svg" alt="专家指导">
+                    </div>
+                    <h3>专家指导</h3>
+                    <p>业情感顾问在线解答</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 最新文章 -->
+        <section class="latest-articles">
+            <div class="section-header">
+                <h2 class="section-title">最新文章</h2>
+                <a href="/blog" class="view-all">查看全部</a>
+            </div>
+            <div class="articles-grid">
+                <% articles.forEach(article => { %>
+                    <article class="article-card">
+                        <div class="article-image">
+                            <img src="<%= article.coverImage %>" alt="<%= article.title %>">
+                        </div>
+                        <div class="article-content">
+                            <h3><a href="/blog/articles/<%= article._id %>"><%= article.title %></a></h3>
+                            <p><%= article.summary %></p>
+                        </div>
+                    </article>
+                <% }); %>
+            </div>
+        </section>
+
+        <!-- 社区动态 -->
+        <section class="community-highlights">
+            <div class="section-header">
+                <h2 class="section-title">社区动态</h2>
+                <a href="/community" class="view-all">进入社区</a>
+            </div>
+            <div class="posts-grid">
+                <% posts.forEach(post => { %>
+                    <div class="post-card">
+                        <div class="post-header">
+                            <span class="post-category"><%= post.category %></span>
+                            <h3><a href="/community/posts/<%= post._id %>"><%= post.title %></a></h3>
+                        </div>
+                        <p class="post-excerpt"><%= post.content.substring(0, 100) %>...</p>
+                        <div class="post-meta">
+                            <span class="post-author"><%= post.user.username %></span>
+                            <div class="post-stats">
+                                <span><i class="icon-eye"></i> <%= post.views %></span>
+                                <span><i class="icon-heart"></i> <%= post.likes.length %></span>
+                            </div>
+                        </div>
+                    </div>
+                <% }); %>
+            </div>
+        </section>
+
+        <!-- 数据统计 -->
+        <section class="stats-section">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number" data-count="<%= stats.users %>">0</div>
+                    <div class="stat-label">注册用户</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" data-count="<%= stats.predictions %>">0</div>
+                    <div class="stat-label">成功预测</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" data-count="<%= stats.matches %>">0</div>
+                    <div class="stat-label">成功匹配</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" data-count="<%= stats.articles %>">0</div>
+                    <div class="stat-label">专业文章</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 用户评价 -->
+        <section class="testimonials-section">
+            <h2 class="section-title">用户评价</h2>
+            <div class="testimonials-slider">
+                <% testimonials.forEach(testimonial => { %>
+                    <div class="testimonial-card">
+                        <div class="testimonial-content">
+                            <p><%= testimonial.content %></p>
+                        </div>
+                        <div class="testimonial-author">
+                            <img src="<%= testimonial.avatar %>" alt="<%= testimonial.name %>" class="author-avatar">
+                            <div class="author-info">
+                                <h4><%= testimonial.name %></h4>
+                                <p><%= testimonial.title %></p>
+                            </div>
+                        </div>
+                    </div>
+                <% }); %>
+            </div>
+        </section>
+
+        <!-- 开始使用 -->
+        <section class="cta-section">
+            <div class="cta-content">
+                <h2>开始寻找您的真爱</h2>
+                <p>让AI帮助您找到最适合的伴侣</p>
+                <a href="/prediction" class="btn btn-primary btn-large">立即开始</a>
+            </div>
+        </section>
+    </main>
+
+    <%- include('partials/footer') %>
+    
+    <script>
+        // 初始化加载状态
+        window.addEventListener('DOMContentLoaded', () => {
+            // DOM加载完成后，添加loaded类
+            document.body.classList.add('dom-loaded');
+        });
+
+        // 所有资源加载完成后
+        window.addEventListener('load', () => {
+            const loader = document.querySelector('.page-loader');
+            if (loader) {
+                loader.classList.add('loaded');
+                setTimeout(() => {
+                    loader.remove(); // 直接移除加载器
+                }, 500);
+            }
+            document.body.classList.add('page-loaded');
+        });
+    </script>
+
+    <!-- 延迟加载其他脚本 -->
+    <script src="/js/main.js" defer></script>
+    <script src="/js/lazy-load.js" defer></script>
+    <script src="/js/form-validator.js" defer></script>
+    <script src="/js/modal.js" defer></script>
+    <script src="/js/auth.js" defer></script>
+    <script src="/js/nav.js" defer></script>
+    <%- include('partials/auth-modals') %>
+</body>
+</html>

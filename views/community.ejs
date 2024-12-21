@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <%- include('partials/nav') %>
+
+    <main class="community-page">
+        <div class="community-header">
+            <h2>社区</h2>
+            <% if (locals.user) { %>
+                <button id="createPostBtn" class="primary-btn">发布帖子</button>
+            <% } %>
+        </div>
+
+        <div class="category-filter">
+            <button class="category-btn active" data-category="all">全部</button>
+            <button class="category-btn" data-category="经验分享">经验分享</button>
+            <button class="category-btn" data-category="情感咨询">情感咨询</button>
+            <button class="category-btn" data-category="成功故事">成功故事</button>
+            <button class="category-btn" data-category="寻找伴侣">寻找伴侣</button>
+        </div>
+
+        <div class="posts-container">
+            <% posts.forEach(post => { %>
+                <div class="post-card" data-category="<%= post.category %>">
+                    <div class="post-header">
+                        <span class="post-category"><%= post.category %></span>
+                        <h3 class="post-title">
+                            <a href="/community/posts/<%= post._id %>"><%= post.title %></a>
+                        </h3>
+                    </div>
+                    <div class="post-meta">
+                        <span class="post-author">作者：<%= post.user.username %></span>
+                        <span class="post-date">
+                            <%= new Date(post.createdAt).toLocaleString() %>
+                        </span>
+                    </div>
+                    <div class="post-preview">
+                        <%= post.content.substring(0, 100) %>...
+                    </div>
+                    <div class="post-stats">
+                        <span class="post-views">
+                            <i class="icon-eye"></i> <%= post.views %>
+                        </span>
+                        <span class="post-likes">
+                            <i class="icon-heart"></i> <%= post.likes.length %>
+                        </span>
+                        <span class="post-comments">
+                            <i class="icon-comment"></i> <%= post.comments.length %>
+                        </span>
+                    </div>
+                </div>
+            <% }); %>
+        </div>
+    </main>
+
+    <!-- 发布帖子模态框 -->
+    <div id="createPostModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>发布帖子</h2>
+            <form id="createPostForm">
+                <div class="form-group">
+                    <label for="postTitle">标题</label>
+                    <input type="text" id="postTitle" name="title" required>
+                </div>
+                <div class="form-group">
+                    <label for="postCategory">分类</label>
+                    <select id="postCategory" name="category" required>
+                        <option value="">请选择</option>
+                        <option value="经验分享">经验分享</option>
+                        <option value="情感咨询">情感咨询</option>
+                        <option value="成功故事">成功故事</option>
+                        <option value="寻找伴侣">寻找伴侣</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="postContent">内容</label>
+                    <textarea id="postContent" name="content" rows="6" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="postTags">标签（用逗号分隔）</label>
+                    <input type="text" id="postTags" name="tags" placeholder="例如：恋爱,婚姻,异地恋">
+                </div>
+                <button type="submit">发布</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="/js/community.js"></script>
+</body>
+</html> 

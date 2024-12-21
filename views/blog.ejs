@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <%- include('partials/nav') %>
+
+    <main class="blog-page">
+        <div class="blog-header">
+            <h2>博客</h2>
+            <% if (locals.user) { %>
+                <a href="/blog/articles/new" class="create-btn">写文章</a>
+            <% } %>
+        </div>
+
+        <div class="blog-filters">
+            <form class="search-form" action="/blog" method="GET">
+                <input type="text" name="keyword" placeholder="搜索文章..." 
+                    value="<%= filters.keyword || '' %>">
+                <button type="submit">搜索</button>
+            </form>
+
+            <div class="sort-options">
+                <select name="sort" onchange="this.form.submit()">
+                    <option value="newest" <%= filters.sort === 'newest' ? 'selected' : '' %>>最新发布</option>
+                    <option value="popular" <%= filters.sort === 'popular' ? 'selected' : '' %>>最多浏览</option>
+                    <option value="comments" <%= filters.sort === 'comments' ? 'selected' : '' %>>最多评论</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="blog-layout">
+            <div class="articles-container">
+                <div class="category-filter">
+                    <button class="category-btn active" data-category="all">全部</button>
+                    <button class="category-btn" data-category="恋爱技巧">恋爱技巧</button>
+                    <button class="category-btn" data-category="婚姻建议">婚姻建议</button>
+                    <button class="category-btn" data-category="心理健康">心理健康</button>
+                    <button class="category-btn" data-category="两性关系">两性关系</button>
+                    <button class="category-btn" data-category="个人成长">个人成长</button>
+                </div>
+
+                <div class="articles-grid">
+                    <% articles.forEach(article => { %>
+                        <article class="article-card" data-category="<%= article.category %>">
+                            <div class="article-cover">
+                                <img src="<%= article.coverImage %>" alt="<%= article.title %>">
+                            </div>
+                            <div class="article-content">
+                                <div class="article-meta">
+                                    <span class="article-category"><%= article.category %></span>
+                                    <span class="article-date">
+                                        <%= new Date(article.createdAt).toLocaleDateString() %>
+                                    </span>
+                                </div>
+                                <h3 class="article-title">
+                                    <a href="/blog/articles/<%= article._id %>"><%= article.title %></a>
+                                </h3>
+                                <p class="article-summary"><%= article.summary %></p>
+                                <div class="article-footer">
+                                    <div class="article-author">
+                                        <span>作者：<%= article.author.username %></span>
+                                    </div>
+                                    <div class="article-stats">
+                                        <span><i class="icon-eye"></i> <%= article.views %></span>
+                                        <span><i class="icon-heart"></i> <%= article.likes.length %></span>
+                                        <span><i class="icon-comment"></i> <%= article.comments.length %></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </article>
+                    <% }); %>
+                </div>
+            </div>
+
+            <aside class="blog-sidebar">
+                <div class="sidebar-section">
+                    <h3>文章分类</h3>
+                    <ul class="category-list">
+                        <li class="<%= !filters.category ? 'active' : '' %>">
+                            <a href="/blog">全部</a>
+                            <span class="count"><%= articles.length %></span>
+                        </li>
+                        <% categories.forEach(cat => { %>
+                            <li class="<%= filters.category === cat._id ? 'active' : '' %>">
+                                <a href="/blog?category=<%= cat._id %>"><%= cat._id %></a>
+                                <span class="count"><%= cat.count %></span>
+                            </li>
+                        <% }); %>
+                    </ul>
+                </div>
+
+                <div class="sidebar-section">
+                    <h3>热门标签</h3>
+                    <div class="tag-cloud">
+                        <% tags.forEach(tag => { %>
+                            <a href="/blog?tag=<%= tag._id %>" 
+                                class="tag <%= filters.tag === tag._id ? 'active' : '' %>"
+                                style="font-size: <%= Math.max(0.8, Math.min(2, tag.count / 5)) %>em">
+                                <%= tag._id %>
+                            </a>
+                        <% }); %>
+                    </div>
+                </div>
+
+                <div class="sidebar-section">
+                    <h3>热门文章</h3>
+                    <ul class="popular-articles">
+                        <% popularArticles.forEach(article => { %>
+                            <li>
+                                <a href="/blog/articles/<%= article._id %>">
+                                    <%= article.title %>
+                                </a>
+                                <div class="article-stats">
+                                    <span><i class="icon-eye"></i> <%= article.views %></span>
+                                    <span><i class="icon-heart"></i> <%= article.likes.length %></span>
+                                    <span><i class="icon-comment"></i> <%= article.comments.length %></span>
+                                </div>
+                            </li>
+                        <% }); %>
+                    </ul>
+                </div>
+
+                <div class="sidebar-section">
+                    <h3>文章归档</h3>
+                    <ul class="archive-list">
+                        <% archives.forEach(archive => { %>
+                            <li>
+                                <a href="/blog/archives/<%= archive._id.year %>/<%= archive._id.month %>">
+                                    <%= archive._id.year %>年<%= archive._id.month %>月
+                                </a>
+                                <span class="count"><%= archive.count %></span>
+                            </li>
+                        <% }); %>
+                    </ul>
+                </div>
+            </aside>
+        </div>
+    </main>
+
+    <script src="/js/blog.js"></script>
+</body>
+</html> 

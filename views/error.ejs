@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <%- include('partials/nav') %>
+
+    <main class="error-page">
+        <div class="error-container">
+            <h1><%= title %></h1>
+            <p><%= message %></p>
+            <% if (error && error.stack) { %>
+                <pre class="error-stack"><%= error.stack %></pre>
+            <% } %>
+            <a href="/" class="back-home">返回首页</a>
+        </div>
+    </main>
+</body>
+</html>

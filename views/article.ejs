@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <%- include('partials/nav') %>
+
+    <main class="article-page">
+        <article class="article-detail">
+            <header class="article-header">
+                <div class="article-meta">
+                    <span class="article-category"><%= article.category %></span>
+                    <span class="article-date">
+                        <%= new Date(article.createdAt).toLocaleString() %>
+                    </span>
+                </div>
+                <h1 class="article-title"><%= article.title %></h1>
+                <div class="article-author">
+                    <span>作者：<%= article.author.username %></span>
+                </div>
+            </header>
+
+            <div class="article-content">
+                <%- article.content %>
+            </div>
+
+            <div class="article-tags">
+                <% article.tags.forEach(tag => { %>
+                    <span class="tag"><%= tag %></span>
+                <% }); %>
+            </div>
+
+            <div class="article-actions">
+                <button class="like-btn <%= article.likes.includes(user?._id) ? 'liked' : '' %>"
+                        data-article-id="<%= article._id %>">
+                    <i class="icon-heart"></i>
+                    <span class="like-count"><%= article.likes.length %></span>
+                </button>
+                <div class="article-stats">
+                    <span><i class="icon-eye"></i> <%= article.views %></span>
+                    <span><i class="icon-comment"></i> <%= article.comments.length %></span>
+                </div>
+            </div>
+        </article>
+
+        <aside class="article-sidebar">
+            <div class="related-articles">
+                <h3>相关文章</h3>
+                <% relatedArticles.forEach(related => { %>
+                    <div class="related-article">
+                        <img src="<%= related.coverImage %>" alt="<%= related.title %>">
+                        <div class="related-content">
+                            <h4><a href="/blog/articles/<%= related._id %>"><%= related.title %></a></h4>
+                            <p><%= related.summary %></p>
+                        </div>
+                    </div>
+                <% }); %>
+            </div>
+        </aside>
+
+        <section class="comments-section">
+            <h3>评论 (<%= article.comments.length %>)</h3>
+            
+            <% if (locals.user) { %>
+                <form id="commentForm" class="comment-form">
+                    <div class="form-group">
+                        <textarea id="commentContent" name="content" rows="4" 
+                            placeholder="写下你的评论..." required></textarea>
+                    </div>
+                    <button type="submit">发表评论</button>
+                </form>
+            <% } else { %>
+                <div class="login-prompt">
+                    <p>请<a href="#" class="login-btn">登录</a>后发表评论</p>
+                </div>
+            <% } %>
+
+            <div class="comment-list">
+                <% article.comments.forEach(comment => { %>
+                    <div class="comment-item">
+                        <div class="comment-meta">
+                            <span class="comment-author">
+                                <%= comment.user.username %>
+                            </span>
+                            <span class="comment-date">
+                                <%= new Date(comment.createdAt).toLocaleString() %>
+                            </span>
+                        </div>
+                        <div class="comment-content">
+                            <%= comment.content %>
+                        </div>
+                    </div>
+                <% }); %>
+            </div>
+        </section>
+    </main>
+
+    <script src="/js/article.js"></script>
+</body>
+</html> 

@@ -1,0 +1,58 @@
+<nav class="main-nav">
+    <!-- 添加滚动进度条 -->
+    <div class="scroll-progress"></div>
+    
+    <div class="nav-container">
+        <a href="/" class="nav-brand">AI恋爱预测</a>
+        
+        <!-- 移动端菜单按钮 -->
+        <button class="menu-toggle" aria-label="菜单">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        
+        <div class="nav-menu">
+            <!-- 添加搜索按钮 -->
+            <button class="search-toggle" aria-label="搜索">
+                <i class="icon-search"></i>
+            </button>
+            
+            <a href="/prediction" class="nav-link">预测</a>
+            <a href="/community" class="nav-link">社区</a>
+            <a href="/blog" class="nav-link">博客</a>
+            <a href="/resources" class="nav-link">资源</a>
+            
+            <% if (locals.user) { %>
+                <div class="user-menu">
+                    <button class="user-btn">
+                        <img src="<%= user.avatar || '/images/default-avatar.png' %>" alt="<%= user.username %>" class="user-avatar">
+                        <span><%= user.username %></span>
+                    </button>
+                    <div class="user-dropdown">
+                        <a href="/profile" class="dropdown-item">个人资料</a>
+                        <a href="/prediction/history" class="dropdown-item">预测历史</a>
+                        <a href="/settings" class="dropdown-item">设置</a>
+                        <button class="dropdown-item logout-btn">退出登录</button>
+                    </div>
+                </div>
+            <% } else { %>
+                <div class="auth-buttons">
+                    <button class="btn btn-outline login-btn">登录</button>
+                    <button class="btn btn-primary register-btn">注册</button>
+                </div>
+            <% } %>
+        </div>
+    </div>
+    
+    <!-- 添加搜索面板 -->
+    <div class="search-panel">
+        <div class="search-container">
+            <input type="text" class="search-input" placeholder="搜索文章、用户或社区内容...">
+            <button class="search-close" aria-label="关闭搜索">
+                <i class="icon-close"></i>
+            </button>
+        </div>
+        <div class="search-results"></div>
+    </div>
+</nav>

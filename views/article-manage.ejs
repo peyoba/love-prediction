@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>文章管理</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <%- include('partials/nav') %>
+
+    <main class="manage-page">
+        <div class="manage-header">
+            <h2>文章管理</h2>
+            <a href="/blog/articles/new" class="create-btn">写文章</a>
+        </div>
+
+        <div class="manage-tabs">
+            <button class="tab-btn active" data-status="all">全部</button>
+            <button class="tab-btn" data-status="published">已发布</button>
+            <button class="tab-btn" data-status="draft">草稿箱</button>
+        </div>
+
+        <div class="article-list">
+            <% articles.forEach(article => { %>
+                <div class="article-item" data-status="<%= article.status %>">
+                    <div class="article-info">
+                        <h3><a href="/blog/articles/<%= article._id %>"><%= article.title %></a></h3>
+                        <div class="article-meta">
+                            <span class="article-date">
+                                <%= new Date(article.createdAt).toLocaleDateString() %>
+                            </span>
+                            <span class="article-status <%= article.status %>">
+                                <%= article.status === 'published' ? '已发布' : '草稿' %>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="article-actions">
+                        <a href="/blog/articles/<%= article._id %>/edit" class="edit-btn">编辑</a>
+                        <button class="delete-btn" data-id="<%= article._id %>">删除</button>
+                    </div>
+                </div>
+            <% }); %>
+        </div>
+    </main>
+
+    <script src="/js/article-manage.js"></script>
+</body>
+</html> 

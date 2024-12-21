@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <!-- 导航菜单 -->
+    <%- include('partials/nav') %>
+
+    <main class="profile-page">
+        <h2>个人资料</h2>
+        <form id="profileForm" class="profile-form">
+            <div class="form-group">
+                <label for="username">用户名</label>
+                <input type="text" id="username" value="<%= user.username %>" disabled>
+            </div>
+            <div class="form-group">
+                <label for="email">邮箱</label>
+                <input type="email" id="email" value="<%= user.email %>" disabled>
+            </div>
+            <div class="form-group">
+                <label for="age">年龄</label>
+                <input type="number" id="age" name="age" value="<%= user.profile.age || '' %>" min="18" max="100">
+            </div>
+            <div class="form-group">
+                <label for="gender">性别</label>
+                <select id="gender" name="gender">
+                    <option value="">请选择</option>
+                    <option value="male" <%= user.profile.gender === 'male' ? 'selected' : '' %>>男</option>
+                    <option value="female" <%= user.profile.gender === 'female' ? 'selected' : '' %>>女</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="personality">性格特征</label>
+                <select id="personality" name="personality">
+                    <option value="">请选择</option>
+                    <option value="外向" <%= user.profile.personality === '外向' ? 'selected' : '' %>>外向</option>
+                    <option value="内向" <%= user.profile.personality === '内向' ? 'selected' : '' %>>内向</option>
+                    <option value="中性" <%= user.profile.personality === '中性' ? 'selected' : '' %>>中性</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>兴趣爱好</label>
+                <div class="checkbox-group">
+                    <% const interests = ['运动', '阅读', '音乐', '旅行', '美食']; %>
+                    <% interests.forEach(interest => { %>
+                        <label>
+                            <input type="checkbox" name="interests" value="<%= interest %>"
+                                <%= user.profile.interests && user.profile.interests.includes(interest) ? 'checked' : '' %>>
+                            <%= interest %>
+                        </label>
+                    <% }); %>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>价值观</label>
+                <div class="checkbox-group">
+                    <% const values = ['家庭', '事业', '健康', '成长']; %>
+                    <% values.forEach(value => { %>
+                        <label>
+                            <input type="checkbox" name="values" value="<%= value %>"
+                                <%= user.profile.values && user.profile.values.includes(value) ? 'checked' : '' %>>
+                            <%= value %>
+                        </label>
+                    <% }); %>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="education">教育程度</label>
+                <select id="education" name="education">
+                    <option value="">请选择</option>
+                    <% const educationLevels = ['高中', '大专', '本科', '硕士', '博士']; %>
+                    <% educationLevels.forEach(level => { %>
+                        <option value="<%= level %>" <%= user.profile.education === level ? 'selected' : '' %>><%= level %></option>
+                    <% }); %>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="occupation">职业</label>
+                <input type="text" id="occupation" name="occupation" value="<%= user.profile.occupation || '' %>">
+            </div>
+            <div class="form-group">
+                <label for="income">收入水平</label>
+                <select id="income" name="income">
+                    <option value="">请选择</option>
+                    <% const incomeLevels = ['0-5k', '5k-10k', '10k-20k', '20k-50k', '50k+']; %>
+                    <% incomeLevels.forEach(level => { %>
+                        <option value="<%= level %>" <%= user.profile.income === level ? 'selected' : '' %>><%= level %></option>
+                    <% }); %>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="location">所在地</label>
+                <input type="text" id="location" name="location" value="<%= user.profile.location || '' %>">
+            </div>
+            <div class="form-group">
+                <label for="marriageGoal">婚恋目标</label>
+                <select id="marriageGoal" name="marriageGoal">
+                    <option value="">请选择</option>
+                    <% const goals = ['恋爱', '结婚', '未定']; %>
+                    <% goals.forEach(goal => { %>
+                        <option value="<%= goal %>" <%= user.profile.marriageGoal === goal ? 'selected' : '' %>><%= goal %></option>
+                    <% }); %>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>生活习惯</label>
+                <div class="checkbox-group">
+                    <% const habits = ['早起', '规律作息', '健身', '烹饪', '整洁']; %>
+                    <% habits.forEach(habit => { %>
+                        <label>
+                            <input type="checkbox" name="livingHabits" value="<%= habit %>"
+                                <%= user.profile.lifestyle && user.profile.lifestyle.livingHabits && user.profile.lifestyle.livingHabits.includes(habit) ? 'checked' : '' %>>
+                            <%= habit %>
+                        </label>
+                    <% }); %>
+                </div>
+            </div>
+            <button type="submit">保存修改</button>
+        </form>
+    </main>
+
+    <script src="/js/profile.js"></script>
+</body>
+</html> 

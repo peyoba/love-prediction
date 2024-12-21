@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <%- include('partials/nav') %>
+
+    <main class="archive-page">
+        <div class="archive-header">
+            <h2><%= year %>年<%= month %>月归档</h2>
+            <a href="/blog" class="back-btn">返回博客</a>
+        </div>
+
+        <div class="archive-list">
+            <% articles.forEach(article => { %>
+                <div class="archive-item">
+                    <div class="article-date">
+                        <%= new Date(article.createdAt).toLocaleDateString() %>
+                    </div>
+                    <div class="article-info">
+                        <h3>
+                            <a href="/blog/articles/<%= article._id %>">
+                                <%= article.title %>
+                            </a>
+                        </h3>
+                        <div class="article-meta">
+                            <span class="article-author">作者：<%= article.author.username %></span>
+                            <div class="article-stats">
+                                <span><i class="icon-eye"></i> <%= article.views %></span>
+                                <span><i class="icon-heart"></i> <%= article.likes.length %></span>
+                                <span><i class="icon-comment"></i> <%= article.comments.length %></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <% }); %>
+        </div>
+    </main>
+</body>
+</html> 

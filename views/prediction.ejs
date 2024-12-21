@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+    <link rel="stylesheet" href="/css/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <%- include('partials/nav') %>
+
+    <main class="prediction-page">
+        <h2>契合度预测</h2>
+        <div class="prediction-container">
+            <form id="predictionForm" class="prediction-form">
+                <div class="form-group">
+                    <label for="age">对方年龄</label>
+                    <input type="number" id="age" name="age" required min="18" max="100">
+                </div>
+                <div class="form-group">
+                    <label for="gender">对方性别</label>
+                    <select id="gender" name="gender" required>
+                        <option value="">请选择</option>
+                        <option value="male">男</option>
+                        <option value="female">女</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="personality">性格特征</label>
+                    <select id="personality" name="personality" required>
+                        <option value="">请选择</option>
+                        <option value="外向">外向</option>
+                        <option value="内向">内向</option>
+                        <option value="中性">中性</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>兴趣爱好（可多选）</label>
+                    <div class="checkbox-group">
+                        <label><input type="checkbox" name="interests" value="运动"> 运动</label>
+                        <label><input type="checkbox" name="interests" value="阅读"> 阅读</label>
+                        <label><input type="checkbox" name="interests" value="音乐"> 音乐</label>
+                        <label><input type="checkbox" name="interests" value="旅行"> 旅行</label>
+                        <label><input type="checkbox" name="interests" value="美食"> 美食</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>价值观（可���选）</label>
+                    <div class="checkbox-group">
+                        <label><input type="checkbox" name="values" value="家庭"> 重视家庭</label>
+                        <label><input type="checkbox" name="values" value="事业"> 注重事业</label>
+                        <label><input type="checkbox" name="values" value="健康"> 关注健康</label>
+                        <label><input type="checkbox" name="values" value="成长"> 追求成长</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="education">教育程度</label>
+                    <select id="education" name="education" required>
+                        <option value="">请选择</option>
+                        <option value="高中">高中</option>
+                        <option value="大专">大专</option>
+                        <option value="本科">本科</option>
+                        <option value="硕士">硕士</option>
+                        <option value="博士">博士</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="occupation">职业</label>
+                    <input type="text" id="occupation" name="occupation" required>
+                </div>
+                <div class="form-group">
+                    <label for="income">收入水平</label>
+                    <select id="income" name="income" required>
+                        <option value="">请选择</option>
+                        <option value="0-5k">5k以下</option>
+                        <option value="5k-10k">5k-10k</option>
+                        <option value="10k-20k">10k-20k</option>
+                        <option value="20k-50k">20k-50k</option>
+                        <option value="50k+">50k以上</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="location">所在地</label>
+                    <input type="text" id="location" name="location" required>
+                </div>
+                <div class="form-group">
+                    <label for="marriageGoal">婚恋目标</label>
+                    <select id="marriageGoal" name="marriageGoal" required>
+                        <option value="">请选择</option>
+                        <option value="恋爱">谈恋爱</option>
+                        <option value="结婚">结婚</option>
+                        <option value="未定">暂未确定</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>生活习惯（可多选）</label>
+                    <div class="checkbox-group">
+                        <label><input type="checkbox" name="livingHabits" value="早起"> 早起</label>
+                        <label><input type="checkbox" name="livingHabits" value="规律作息"> 规律作息</label>
+                        <label><input type="checkbox" name="livingHabits" value="健身"> 经常健身</label>
+                        <label><input type="checkbox" name="livingHabits" value="烹饪"> 喜欢烹饪</label>
+                        <label><input type="checkbox" name="livingHabits" value="整洁"> 注重整洁</label>
+                    </div>
+                </div>
+                <button type="submit">开始预测</button>
+            </form>
+
+            <div id="resultContainer" class="result-container" style="display: none;">
+                <h3>预测结果</h3>
+                <div class="compatibility-score">
+                    <div class="score-circle">
+                        <span id="score">0</span>%
+                    </div>
+                    <p>契合度</p>
+                </div>
+                <div class="aspect-scores">
+                    <div class="aspect">
+                        <label>
+                            性格匹配
+                            <span id="personalityScoreText">0%</span>
+                        </label>
+                        <div class="progress-bar">
+                            <div id="personalityScore" class="progress"></div>
+                        </div>
+                    </div>
+                    <div class="aspect">
+                        <label>
+                            生活方式
+                            <span id="lifestyleScoreText">0%</span>
+                        </label>
+                        <div class="progress-bar">
+                            <div id="lifestyleScore" class="progress"></div>
+                        </div>
+                    </div>
+                    <div class="aspect">
+                        <label>
+                            价值观
+                            <span id="valuesScoreText">0%</span>
+                        </label>
+                        <div class="progress-bar">
+                            <div id="valuesScore" class="progress"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="analysis">
+                    <h4>详细分析</h4>
+                    <p id="analysisText"></p>
+                </div>
+                <div class="radar-chart-container">
+                    <canvas id="radarChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="prediction-history">
+            <h3>预测历史</h3>
+            <div id="historyList"></div>
+        </div>
+    </main>
+
+    <script src="/js/prediction.js"></script>
+</body>
+</html> 

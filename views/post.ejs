@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <%- include('partials/nav') %>
+
+    <main class="community-page">
+        <div class="post-detail">
+            <div class="post-header">
+                <span class="post-category"><%= post.category %></span>
+                <h2 class="post-title"><%= post.title %></h2>
+                <div class="post-meta">
+                    <span class="post-author">作者：<%= post.user.username %></span>
+                    <span class="post-date">
+                        <%= new Date(post.createdAt).toLocaleString() %>
+                    </span>
+                </div>
+            </div>
+
+            <div class="post-content">
+                <%= post.content %>
+            </div>
+
+            <div class="post-tags">
+                <% post.tags.forEach(tag => { %>
+                    <span class="tag"><%= tag %></span>
+                <% }); %>
+            </div>
+
+            <div class="post-actions">
+                <button class="like-btn <%= post.likes.includes(user?._id) ? 'liked' : '' %>"
+                        data-post-id="<%= post._id %>">
+                    <i class="icon-heart"></i>
+                    <span class="like-count"><%= post.likes.length %></span>
+                </button>
+                <div class="post-stats">
+                    <span class="post-views">
+                        <i class="icon-eye"></i> <%= post.views %>
+                    </span>
+                    <span class="post-comments">
+                        <i class="icon-comment"></i> <%= post.comments.length %>
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <div class="comments-section">
+            <h3>评论 (<%= post.comments.length %>)</h3>
+            
+            <% if (locals.user) { %>
+                <form id="commentForm" class="comment-form">
+                    <div class="form-group">
+                        <textarea id="commentContent" name="content" rows="4" 
+                            placeholder="写下你的评论..." required></textarea>
+                    </div>
+                    <button type="submit">发表评论</button>
+                </form>
+            <% } else { %>
+                <div class="login-prompt">
+                    <p>请<a href="#" class="login-btn">登录</a>后发表评论</p>
+                </div>
+            <% } %>
+
+            <div class="comment-list">
+                <% post.comments.forEach(comment => { %>
+                    <div class="comment-item">
+                        <div class="comment-meta">
+                            <span class="comment-author">
+                                <%= comment.user.username %>
+                            </span>
+                            <span class="comment-date">
+                                <%= new Date(comment.createdAt).toLocaleString() %>
+                            </span>
+                        </div>
+                        <div class="comment-content">
+                            <%= comment.content %>
+                        </div>
+                    </div>
+                <% }); %>
+            </div>
+        </div>
+    </main>
+
+    <script src="/js/post.js"></script>
+</body>
+</html> 
