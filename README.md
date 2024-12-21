@@ -2,7 +2,7 @@
 ## 项目简介
 I恋爱预测系统是一个基于人工智能的智能匹配系统，帮助用户找到最适合的伴侣。通过先进的算法分析用户的性格、兴趣和价值观，为用户提供科学的匹配建议。
 ## 在线访问
- 生产环境：[https://love-prediction-5la8rskfr-peyobas-projects.vercel.app](https://love-prediction-5la8rskfr-peyobas-projects.vercel.app)
+ 生产环境：[https://ai.peyoba.top](https://ai.peyoba.top)
 ## 主要功能
  AI预测匹配
  * 性格匹配分析
